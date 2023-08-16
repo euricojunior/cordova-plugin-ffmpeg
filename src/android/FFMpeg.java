@@ -41,8 +41,10 @@ public class FFMpeg extends CordovaPlugin {
 
             Config.enableStatisticsCallback(new StatisticsCallback() {
                 public void apply(Statistics newStatistics) {
+                    MediaInformation info = FFprobe.getMediaInformation(data.getString(0));
+                    String filename = info.getAllProperties().format.filename;
                     //Log.d(Config.TAG, String.format("frame: %d, time: %d", newStatistics.getVideoFrameNumber(), newStatistics.getTime()));
-                    callbackContext.success(String.format("Frames: %d, Time: %d, New Size: %s, Speed: %s",newStatistics.getVideoFrameNumber(), newStatistics.getTime() / 1000, newStatistics.getSize() / 1024 / 1024 + "MB", newStatistics.getSpeed()));
+                    callbackContext.success(String.format("Filename: %d, Frames: %d, Time: %d, New Size: %s, Speed: %s", filename, newStatistics.getVideoFrameNumber(), newStatistics.getTime() / 1000, newStatistics.getSize() / 1024 / 1024 + "MB", newStatistics.getSpeed()));
                 }
             });
             return true;
